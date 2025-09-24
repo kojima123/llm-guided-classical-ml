@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "LLM-Guided Learning for Classical Machine Learning"
+abstract: "A novel framework that leverages Large Language Models as adaptive teachers to guide the learning process of classical machine learning algorithms."
+authors:
+  - family-names: "Kojima"
+    given-names: "Hiroshi"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+    email: "kojima.research@example.com"
+repository-code: "https://github.com/kojima123/llm-guided-classical-ml"
+url: "https://github.com/kojima123/llm-guided-classical-ml"
+license: MIT
+version: "1.0.0"
+date-released: "2024-12-24"
+keywords:
+  - "machine learning"
+  - "large language models"
+  - "extreme learning machine"
+  - "teacher-student framework"
+  - "robot control"
+  - "classification"
+  - "reproducible research"

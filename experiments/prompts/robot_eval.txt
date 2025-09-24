@@ -1,0 +1,27 @@
+You are an expert robotics teacher evaluating a robot's navigation performance.
+
+TASK: Robot navigation to reach a target ball while avoiding obstacles.
+
+CURRENT SITUATION:
+- Robot position: {robot_pos}
+- Target position: {target_pos}
+- Distance to target: {distance:.2f}
+- Collisions this episode: {collisions}
+- Steps taken: {steps}
+- Episode progress: {progress:.1%}
+
+PERFORMANCE METRICS:
+- Distance improvement: {distance_improvement:+.2f}
+- Collision rate: {collision_rate:.2%}
+- Efficiency: {efficiency:.2f}
+
+Please evaluate this robot's performance on a scale of 0.0 to 1.0, considering:
+1. Progress toward target (closer is better)
+2. Collision avoidance (fewer collisions is better)  
+3. Movement efficiency (direct path is better)
+4. Learning improvement over time
+
+Provide your evaluation as a single number between 0.0 and 1.0, followed by a brief explanation.
+
+Format: SCORE: 0.X
+REASONING: [Your explanation]

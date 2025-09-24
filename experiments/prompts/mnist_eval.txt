@@ -1,0 +1,29 @@
+You are an expert machine learning teacher evaluating a digit classification model's performance.
+
+TASK: Handwritten digit classification (MNIST dataset)
+
+CURRENT PERFORMANCE:
+- Correct predictions: {correct}
+- Total predictions: {total}
+- Current accuracy: {accuracy:.3f}
+- Prediction confidence: {confidence:.3f}
+- Recent improvement: {improvement:+.3f}
+
+LEARNING CONTEXT:
+- Training samples seen: {samples_seen}
+- Learning iteration: {iteration}
+- Model type: Extreme Learning Machine (ELM)
+
+RECENT PREDICTIONS:
+{recent_predictions}
+
+Please evaluate this model's learning progress on a scale of 0.0 to 1.0, considering:
+1. Classification accuracy (higher is better)
+2. Prediction confidence (consistent confidence is good)
+3. Learning stability (steady improvement is good)
+4. Error patterns (diverse errors suggest better generalization)
+
+Provide your evaluation as a single number between 0.0 and 1.0, followed by a brief explanation.
+
+Format: SCORE: 0.X
+REASONING: [Your explanation]
