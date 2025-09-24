@@ -22,9 +22,12 @@ except ImportError:
 class RobotSimulation:
     """2Dロボットシミュレーション環境"""
     
-    def __init__(self, width: float = 10, height: float = 10):
+    def __init__(self, width: float = 10, height: float = 10, random_state: int = None):
         self.width = width
         self.height = height
+        self.random_state = random_state
+        if random_state is not None:
+            np.random.seed(random_state)
         self.reset()
     
     def reset(self) -> np.ndarray:
@@ -39,6 +42,8 @@ class RobotSimulation:
             np.random.uniform(6.0, 9.0),
             np.random.uniform(6.0, 9.0)
         ])
+        # Alias for compatibility
+        self.target_pos = self.ball_pos
         self.ball_vel = np.array([
             np.random.uniform(-0.2, 0.2),
             np.random.uniform(-0.2, 0.2)
@@ -140,7 +145,17 @@ class RobotSimulation:
         
         self.time += dt
         
-        return self.get_sensor_data()
+        # Check for collision
+        collision = False
+        for obstacle in self.obstacles:
+            if np.linalg.norm(self.robot_pos - obstacle) < 0.8:
+                collision = True
+                self.collision_count += 1
+                break
+        
+        # Return distance to target and collision status
+        distance = np.linalg.norm(self.ball_pos - self.robot_pos)
+        return distance, collision
     
     def get_state_info(self) -> Dict:
         """現在の状態情報を取得（LLM評価用）"""
@@ -168,10 +183,14 @@ class RobotSimulation:
 class ReversedActivationELM:
     """活性化関数位置逆転ELM（ブログアルゴリズム風）"""
     
-    def __init__(self, input_size: int, hidden_size: int, output_size: int):
+    def __init__(self, input_size: int, hidden_size: int, output_size: int, random_state: int = None):
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.output_size = output_size
+        
+        # Set random seed if provided
+        if random_state is not None:
+            np.random.seed(random_state)
         
         # 重みの初期化
         self.input_weights = np.random.randn(input_size, hidden_size) * 0.1
@@ -250,14 +269,53 @@ class ReversedActivationELM:
             'error_rate': error_rate,
             'learning_rate': adaptive_lr
         })
+    
+    def fit(self, X, y):
+        """Fit the ELM model using least squares for output weights."""
+        if len(X.shape) == 1:
+            X = X.reshape(1, -1)
+        if len(y.shape) == 1:
+            y = y.reshape(1, -1)
+        
+        # Compute hidden layer output
+        hidden_input = np.dot(X, self.hidden_weights) + self.hidden_bias
+        hidden_output = self.activation(hidden_input)
+        
+        # Solve for output weights using least squares
+        try:
+            self.output_weights = np.linalg.pinv(hidden_output) @ y
+        except:
+            # Fallback to normal equations
+            self.output_weights = np.linalg.solve(
+                hidden_output.T @ hidden_output + 1e-6 * np.eye(hidden_output.shape[1]),
+                hidden_output.T @ y
+            )
+    
+    def predict(self, X):
+        """Make predictions using the trained ELM."""
+        if len(X.shape) == 1:
+            X = X.reshape(1, -1)
+        
+        # Compute hidden layer output
+        hidden_input = np.dot(X, self.hidden_weights) + self.hidden_bias
+        hidden_output = self.activation(hidden_input)
+        
+        # Compute output
+        output = np.dot(hidden_output, self.output_weights)
+        
+        return output
 
 class TraditionalELM:
     """従来のELM（比較用）"""
     
-    def __init__(self, input_size: int, hidden_size: int, output_size: int):
+    def __init__(self, input_size: int, hidden_size: int, output_size: int, random_state: int = None):
         self.input_size = input_size
         self.hidden_size = hidden_size
         self.output_size = output_size
+        
+        # Set random seed if provided
+        if random_state is not None:
+            np.random.seed(random_state)
         
         # 隠れ層の重みは固定
         self.hidden_weights = np.random.randn(input_size, hidden_size)
@@ -310,6 +368,41 @@ class TraditionalELM:
             'error_rate': error_rate,
             'learning_rate': adaptive_lr
         })
+    
+    def fit(self, X, y):
+        """Fit the ELM model using least squares for output weights."""
+        if len(X.shape) == 1:
+            X = X.reshape(1, -1)
+        if len(y.shape) == 1:
+            y = y.reshape(1, -1)
+        
+        # Compute hidden layer output
+        hidden_input = np.dot(X, self.hidden_weights) + self.hidden_bias
+        hidden_output = self.activation(hidden_input)
+        
+        # Solve for output weights using least squares
+        try:
+            self.output_weights = np.linalg.pinv(hidden_output) @ y
+        except:
+            # Fallback to normal equations
+            self.output_weights = np.linalg.solve(
+                hidden_output.T @ hidden_output + 1e-6 * np.eye(hidden_output.shape[1]),
+                hidden_output.T @ y
+            )
+    
+    def predict(self, X):
+        """Make predictions using the trained ELM."""
+        if len(X.shape) == 1:
+            X = X.reshape(1, -1)
+        
+        # Compute hidden layer output
+        hidden_input = np.dot(X, self.hidden_weights) + self.hidden_bias
+        hidden_output = self.activation(hidden_input)
+        
+        # Compute output
+        output = np.dot(hidden_output, self.output_weights)
+        
+        return output
 
 class LLMEvaluator:
     """LLM評価器（OpenAI API使用）"""
@@ -429,6 +522,11 @@ JSON形式で回答してください:
             "reasoning": "; ".join(reasoning_parts),
             "suggestions": "ボールに向かって効率的に移動し、障害物を避けてください"
         }
+
+# Aliases for compatibility
+ActivationReversedELM = ReversedActivationELM
+LLMTeacher = LLMEvaluator
+RobotEnvironment = RobotSimulation
 
 class LLMELMHybridSystem:
     """LLM-ELMハイブリッド学習システム"""

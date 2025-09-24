@@ -1,0 +1,45 @@
+{
+  "mnist": {
+    "traditional_elm": {
+      "accuracies": [],
+      "times": []
+    },
+    "llm_guided_elm": {
+      "accuracies": [],
+      "times": []
+    },
+    "metadata": {
+      "n_samples": 200,
+      "test_samples": 50,
+      "trials": 1,
+      "seed": 42
+    }
+  },
+  "robot": {
+    "traditional_elm": {
+      "performances": [],
+      "distances": [],
+      "collisions": []
+    },
+    "llm_guided_elm": {
+      "performances": [],
+      "distances": [],
+      "collisions": []
+    },
+    "metadata": {
+      "n_episodes": 3,
+      "steps_per_episode": 50,
+      "trials": 1,
+      "seed": 42
+    }
+  },
+  "experiment_config": {
+    "seed": 42,
+    "trials": 1,
+    "quick": true,
+    "offline": true,
+    "mnist_only": false,
+    "robot_only": false
+  },
+  "timestamp": "20250924_060727"
+}

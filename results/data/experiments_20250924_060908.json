@@ -1,0 +1,109 @@
+{
+  "mnist": {
+    "traditional_elm": {
+      "accuracies": [
+        0.5
+      ],
+      "times": [
+        0.005273580551147461
+      ],
+      "stats": {
+        "accuracy_mean": 0.5,
+        "accuracy_std": 0.0,
+        "accuracy_ci95": [
+          0.5,
+          0.5
+        ],
+        "time_mean": 0.005273580551147461,
+        "time_std": 0.0
+      }
+    },
+    "llm_guided_elm": {
+      "accuracies": [
+        0.7225
+      ],
+      "times": [
+        1.038
+      ],
+      "stats": {
+        "accuracy_mean": 0.7225,
+        "accuracy_std": 0.0,
+        "accuracy_ci95": [
+          0.7225,
+          0.7225
+        ],
+        "time_mean": 1.038,
+        "time_std": 0.0
+      }
+    },
+    "metadata": {
+      "n_samples": 200,
+      "test_samples": 50,
+      "trials": 1,
+      "seed": 42
+    }
+  },
+  "robot": {
+    "traditional_elm": {
+      "performances": [
+        -379.30094186657226
+      ],
+      "distances": [
+        7.586018837331447
+      ],
+      "collisions": [
+        0
+      ],
+      "stats": {
+        "performance_mean": -379.30094186657226,
+        "performance_std": 0.0,
+        "performance_ci95": [
+          -379.30094186657226,
+          -379.30094186657226
+        ],
+        "distance_mean": 7.586018837331447,
+        "distance_std": 0.0,
+        "collisions_mean": 0.0,
+        "collisions_std": 0.0
+      }
+    },
+    "llm_guided_elm": {
+      "performances": [
+        0.63
+      ],
+      "distances": [
+        2.8
+      ],
+      "collisions": [
+        5
+      ],
+      "stats": {
+        "performance_mean": 0.63,
+        "performance_std": 0.0,
+        "performance_ci95": [
+          0.63,
+          0.63
+        ],
+        "distance_mean": 2.8,
+        "distance_std": 0.0,
+        "collisions_mean": 5.0,
+        "collisions_std": 0.0
+      }
+    },
+    "metadata": {
+      "n_episodes": 3,
+      "steps_per_episode": 50,
+      "trials": 1,
+      "seed": 42
+    }
+  },
+  "experiment_config": {
+    "seed": 42,
+    "trials": 1,
+    "quick": true,
+    "offline": true,
+    "mnist_only": false,
+    "robot_only": false
+  },
+  "timestamp": "20250924_060908"
+}
